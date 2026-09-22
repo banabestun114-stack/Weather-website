@@ -1,14 +1,29 @@
 import { fileURLToPath, URL } from 'node:url'
 import Vue from '@vitejs/plugin-vue'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
 import Fonts from 'unplugin-fonts/vite'
 import { defineConfig } from 'vite'
+import VueRouter from 'vue-router/vite'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    VueRouter({
+      routesFolder: 'src/pages',
+      dts: 'src/typed-router.d.ts',
+    }),
     Vue({
       template: { transformAssetUrls },
+    }),
+    AutoImport({
+      imports: ['vue', 'vue-router'],
+      dts: 'src/auto-imports.d.ts',
+      vueTemplate: true,
+    }),
+    Components({
+      dts: 'src/components.d.ts',
     }),
     // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
     Vuetify({
