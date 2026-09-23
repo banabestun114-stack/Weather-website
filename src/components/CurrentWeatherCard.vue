@@ -1,10 +1,10 @@
 <template>
   <v-card class="current-weather-card" fluid rounded="xl">
-    <div class="d-flex justify-space-between align-start">
+    <v-container class="d-flex justify-space-between align-center fill-height">
       <div>
         <h2
           class="font-weight-bold mb-1"
-          :class="xs ? 'text-title-medium' : 'text-headline-small'"
+          :class="xs ? 'text-title-large' : 'text-headline-small'"
         >
           {{ location }}
         </h2>
@@ -14,14 +14,14 @@
       </div>
 
       <div class="d-flex align-center ga-2 flex-shrink-0">
-        <v-icon color="amber-lighten-1" :icon="icon" :size="xs ? 28 : 40" />
+        <v-icon color="amber-lighten-1" :icon="icon" :size="xs ? 32 : 40" />
         <span
           class="font-weight-bold"
           :class="xs ? 'text-display-small' : 'text-display-large'"
           >{{ temp }}°</span
         >
       </div>
-    </div>
+    </v-container>
   </v-card>
 </template>
 

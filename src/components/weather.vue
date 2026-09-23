@@ -19,10 +19,10 @@
           :location="current.location"
           :temp="current.temp"
         />
-<!-- 
+
         <weather-stats class="mt-4" :stats="stats" />
 
-        <daily-forecast class="mt-6" :days="dailyForecastDays" /> -->
+        <daily-forecast class="mt-6" :days="dailyForecastDays" />
       </v-col>
 
       <!-- <v-col cols="12" md="4">
