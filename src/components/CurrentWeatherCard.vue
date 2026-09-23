@@ -1,6 +1,6 @@
 <template>
-  <v-card class="current-weather-card pa-4 pa-sm-6" flat rounded="xl">
-    <div class="d-flex justify-space-between align-start flex-nowrap ga-2">
+  <v-card class="current-weather-card" fluid rounded="xl">
+    <div class="d-flex justify-space-between align-start">
       <div>
         <h2
           class="font-weight-bold mb-1"
@@ -49,6 +49,7 @@ const bgSmall = `url(${bgSmallUrl})`;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  height: 200px;
 }
 
 @media (max-width: 600px) {
