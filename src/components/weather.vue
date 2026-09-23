@@ -22,7 +22,7 @@
 
         <weather-stats :stats="stats" />
 
-        <!-- <daily-forecast class="mt-6" :days="dailyForecastDays" /> -->
+        <daily-forecast :days="dailyForecastDays" />
       </v-col>
 
       <!-- <v-col cols="12" md="4">

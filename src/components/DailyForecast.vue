@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pt-6">
     <h3 class="text-title-medium font-weight-bold mb-3">
       {{ t("dailyForecast.title") }}
     </h3>
