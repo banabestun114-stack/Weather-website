@@ -11,8 +11,14 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CurrentWeatherCard: typeof import('./components/CurrentWeatherCard.vue')['default']
+    DailyForecast: typeof import('./components/DailyForecast.vue')['default']
+    HourlyForecast: typeof import('./components/HourlyForecast.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchBar: typeof import('./components/SearchBar.vue')['default']
     Weather: typeof import('./components/weather.vue')['default']
+    WeatherHeader: typeof import('./components/WeatherHeader.vue')['default']
+    WeatherStats: typeof import('./components/WeatherStats.vue')['default']
   }
 }

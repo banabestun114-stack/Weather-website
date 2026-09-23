@@ -1,0 +1,37 @@
+{
+  "app": {
+    "name": "Weather Now"
+  },
+  "header": {
+    "units": "Units",
+    "unitOptions": ["Fahrenheit (°F)", "Celsius (°C)"]
+  },
+  "home": {
+    "title": "How's the sky looking today?"
+  },
+  "search": {
+    "placeholder": "Search for a place…",
+    "button": "Search"
+  },
+  "stats": {
+    "feelsLike": "Feels Like",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "precipitation": "Precipitation"
+  },
+  "dailyForecast": {
+    "title": "Daily forecast"
+  },
+  "hourlyForecast": {
+    "title": "Hourly forecast",
+    "days": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    }
+  }
+}
