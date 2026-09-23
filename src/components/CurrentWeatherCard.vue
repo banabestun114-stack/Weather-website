@@ -1,5 +1,5 @@
 <template>
-  <v-card class="current-weather-card" fluid rounded="xl">
+  <v-card class="current-weather-card" fluid rounded="lg">
     <v-container class="d-flex justify-space-between align-center fill-height">
       <div>
         <h2
