@@ -1,6 +1,6 @@
 <template>
   <v-card class="h-100 pa-4" color="surface-bright" flat rounded="lg">
-    <div class="d-flex justify-space-between align-center mb-3">
+    <div class="d-flex justify-space-between align-center">
       <h3 class="text-title-medium font-weight-bold">
         {{ t("hourlyForecast.title") }}
       </h3>
@@ -24,25 +24,21 @@
       </v-menu>
     </div>
 
-    <v-list bg-color="transparent" class="pa-0">
-      <template v-for="(hour, index) in hours" :key="hour.time">
-        <v-list-item class="px-1" :title="hour.time">
-          <template #prepend>
-            <v-icon
-              class="mr-3"
-              :color="hour.color"
-              :icon="hour.icon"
-              size="20"
-            />
-          </template>
-          <template #append>
-            <span class="font-weight-medium">{{ hour.temp }}°</span>
-          </template>
-        </v-list-item>
-
-        <v-divider v-if="index < hours.length - 1" />
-      </template>
-    </v-list>
+    <div class="hour-list d-flex flex-column ga-3">
+      <v-card
+        v-for="hour in hours"
+        :key="hour.time"
+        class="hour-card d-flex align-center justify-space-between px-4 py-3"
+        flat
+        rounded="lg"
+      >
+        <div class="d-flex align-center ga-3">
+          <v-icon :color="hour.color" :icon="hour.icon" size="22" />
+          <span class="text-body-large">{{ hour.time }}</span>
+        </div>
+        <span class="font-weight-medium">{{ hour.temp }}°</span>
+      </v-card>
+    </div>
   </v-card>
 </template>
 
@@ -68,3 +64,15 @@ const dayOptions = computed(() =>
 
 const selectedDay = ref(dayOptions.value[1]);
 </script>
+
+<style scoped>
+.hour-list {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.hour-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  flex: none;
+}
+</style>
