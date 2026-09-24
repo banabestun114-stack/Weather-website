@@ -62,7 +62,8 @@ const dayOptions = computed(() =>
   dayKeys.map((key) => t(`hourlyForecast.days.${key}`)),
 );
 
-const selectedDay = ref(dayOptions.value[1]);
+const todayIndex = (new Date().getDay() + 6) % 7;
+const selectedDay = ref(dayOptions.value[todayIndex]);
 </script>
 
 <style scoped>

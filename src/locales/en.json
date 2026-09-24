@@ -4,7 +4,17 @@
   },
   "header": {
     "units": "Units",
-    "unitOptions": ["Fahrenheit (°F)", "Celsius (°C)"]
+    "switchToImperial": "Switch to Imperial",
+    "switchToMetric": "Switch to Metric",
+    "temperature": "Temperature",
+    "celsius": "Celsius (°C)",
+    "fahrenheit": "Fahrenheit (°F)",
+    "windSpeed": "Wind Speed",
+    "kmh": "km/h",
+    "mph": "mph",
+    "precipitation": "Precipitation",
+    "millimeters": "Millimeters (mm)",
+    "inches": "Inches (in)"
   },
   "home": {
     "title": "How's the sky looking today?"
