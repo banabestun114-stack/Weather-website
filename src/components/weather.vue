@@ -25,7 +25,12 @@
       {{ errorMessage }}
     </v-alert>
 
-    <search-bar class="mb-8" :loading="loading" @search="handleSearch" />
+    <search-bar
+      class="mb-8"
+      :loading="loading"
+      @search="handleSearch"
+      @select="handleSelect"
+    />
 
     <v-row>
       <v-col cols="12" md="8">
@@ -145,6 +150,12 @@ async function handleSearch (query) {
     errorMessage.value = translateError(error, "errors.searchFailed");
     loading.value = false;
   }
+}
+
+/** A place picked from the search suggestions — we already have its coordinates. */
+function handleSelect (place) {
+  hasSearched.value = true;
+  loadWeather(place);
 }
 
 watch(units, () => {

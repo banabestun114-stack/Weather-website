@@ -22,27 +22,36 @@ function weatherError (i18nKey, params = {}) {
   return error
 }
 
-/** Look up a place name via Open-Meteo's geocoding API. */
-export async function geocodeLocation (query) {
+/** Find places matching a name via Open-Meteo's geocoding API (used for search suggestions). */
+export async function searchPlaces (query, count = 5, { signal } = {}) {
   const params = new URLSearchParams({
     name: query,
-    count: '1',
+    count: String(count),
     language: 'en',
     format: 'json',
   })
 
-  const response = await fetch(`${GEOCODING_URL}?${params}`)
+  const response = await fetch(`${GEOCODING_URL}?${params}`, { signal })
   if (!response.ok) throw weatherError('errors.searchFailed')
 
   const data = await response.json()
-  const match = data.results?.[0]
-  if (!match) throw weatherError('errors.placeNotFound', { query })
-
-  return {
+  return (data.results ?? []).map(match => ({
+    id: match.id,
     name: [match.name, match.admin1, match.country].filter(Boolean).slice(0, 2).join(', '),
+    // Shown under the city in the suggestion list, e.g. "Kurdistan, Iraq"
+    city: match.name,
+    region: [match.admin1, match.country].filter(Boolean).join(', '),
     latitude: match.latitude,
     longitude: match.longitude,
-  }
+  }))
+}
+
+/** Look up the best match for a place name. */
+export async function geocodeLocation (query) {
+  const [match] = await searchPlaces(query, 1)
+  if (!match) throw weatherError('errors.placeNotFound', { query })
+
+  return match
 }
 
 /**
