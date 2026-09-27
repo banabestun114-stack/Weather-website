@@ -1,5 +1,12 @@
 <template>
-  <v-container class="py-6 py-sm-10">
+  <!-- Ambient page background: soft glows tinted by the current weather scene -->
+  <div class="ambient" :class="`ambient-${scene || 'night'}`" aria-hidden="true">
+    <div class="glow glow-1" />
+    <div class="glow glow-2" />
+    <div class="glow glow-3" />
+  </div>
+
+  <v-container class="page py-6 py-sm-10">
     <weather-header />
 
     <!-- API / network failure: replaces the page with a retry screen -->
@@ -279,5 +286,106 @@ onMounted(() => {
 <style scoped>
 .error-state {
   max-width: 560px;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+}
+
+/* Registered so the colors fade smoothly when the scene changes */
+@property --glow-1 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --glow-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --glow-3 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: --glow-1 1.5s ease, --glow-2 1.5s ease, --glow-3 1.5s ease;
+}
+
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.6;
+  will-change: transform;
+}
+
+.glow-1 {
+  width: 60vmax;
+  height: 60vmax;
+  top: -22vmax;
+  left: -12vmax;
+  background: radial-gradient(circle, var(--glow-1), transparent 70%);
+  animation: drift-1 38s ease-in-out infinite alternate;
+}
+
+.glow-2 {
+  width: 50vmax;
+  height: 50vmax;
+  top: 10vh;
+  right: -18vmax;
+  background: radial-gradient(circle, var(--glow-2), transparent 70%);
+  animation: drift-2 44s ease-in-out infinite alternate;
+}
+
+.glow-3 {
+  width: 55vmax;
+  height: 55vmax;
+  bottom: -25vmax;
+  left: 15vw;
+  background: radial-gradient(circle, var(--glow-3), transparent 70%);
+  animation: drift-3 50s ease-in-out infinite alternate;
+}
+
+/* Scene palettes (same families as the hero card backgrounds) */
+.ambient-clear { --glow-1: #2f6fd0; --glow-2: #38bdf8; --glow-3: #4f63f5; }
+.ambient-hot { --glow-1: #3b2f5c; --glow-2: #d99045; --glow-3: #9a5a2e; }
+.ambient-golden { --glow-1: #3f3582; --glow-2: #ec8d4f; --glow-3: #b04e78; }
+.ambient-cloudy { --glow-1: #45536c; --glow-2: #8e99b0; --glow-3: #67758f; }
+.ambient-fog { --glow-1: #5b6472; --glow-2: #9ca3af; --glow-3: #7f8896; }
+.ambient-rain { --glow-1: #2d3a4f; --glow-2: #1e6f8f; --glow-3: #3f4d64; }
+.ambient-storm { --glow-1: #2e2a55; --glow-2: #4338ca; --glow-3: #1d2540; }
+.ambient-snow { --glow-1: #6286b8; --glow-2: #c7d2fe; --glow-3: #93acd0; }
+.ambient-dust { --glow-1: #7a5a30; --glow-2: #c19e68; --glow-3: #a07840; }
+.ambient-night { --glow-1: #222766; --glow-2: #4f63f5; --glow-3: #372c75; }
+
+@keyframes drift-1 {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(12vw, 8vh) scale(1.15); }
+}
+
+@keyframes drift-2 {
+  from { transform: translate(0, 0) scale(1.1); }
+  to { transform: translate(-10vw, 12vh) scale(0.95); }
+}
+
+@keyframes drift-3 {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(-14vw, -10vh) scale(1.2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow {
+    animation: none;
+  }
 }
 </style>
