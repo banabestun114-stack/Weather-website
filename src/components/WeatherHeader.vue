@@ -5,9 +5,11 @@
     <div class="d-flex align-center ga-2">
       <v-btn
         :aria-label="isDark ? t('theme.light') : t('theme.dark')"
+        :height="xs ? 28 : 36"
         :icon="isDark ? 'mdi-weather-sunny' : 'mdi-weather-night'"
         rounded="lg"
         :size="xs ? 'small' : 'default'"
+        :width="xs ? 28 : 36"
         :title="isDark ? t('theme.light') : t('theme.dark')"
         variant="tonal"
         @click="toggleTheme"
