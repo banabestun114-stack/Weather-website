@@ -58,3 +58,15 @@ export function getWeatherIcon (code, isDay = true) {
   const icon = WEATHER_CODE_ICONS[code] ?? iconOvercast
   return isDay ? icon : (NIGHT_ICONS.get(icon) ?? icon)
 }
+
+/** Broad condition for a WMO code — used to pick the hero card's background scene. */
+export function getWeatherCondition (code) {
+  if (code <= 1) return 'clear'
+  if (code === 2) return 'partly'
+  if (code === 3) return 'cloudy'
+  if (code === 45 || code === 48) return 'fog'
+  if ((code >= 71 && code <= 77) || code === 85 || code === 86) return 'snow'
+  if (code >= 95) return 'storm'
+  if (code >= 51) return 'rain'
+  return 'cloudy'
+}

@@ -58,10 +58,15 @@
               :date="current.date"
               :image="current.image"
               :location="current.location"
+              :note="yesterdayNote.text"
+              :note-icon="yesterdayNote.icon"
+              :scene="scene"
               :temp="current.temp"
             />
 
             <weather-stats :stats="stats" />
+
+            <weather-insights :insights="insights" />
 
             <daily-forecast :days="dailyForecastDays" />
           </template>
@@ -100,20 +105,26 @@
 
 <script setup>
 import { useDisplay } from "vuetify";
+import { createDateFormatter } from "@/composables/dateFormat";
+import { useLanguage } from "@/composables/useLanguage";
 import { useUnits } from "@/composables/useUnits";
+import { buildInsights, getScene } from "@/composables/weatherInsights";
 import {
   buildCurrentWeather,
   buildDailyForecast,
   buildHourlyForecast,
   buildStats,
+  fetchAirQuality,
   fetchForecast,
   geocodeLocation,
   getBrowserPosition,
   reverseGeocode,
 } from "@/composables/useWeather";
 
+// `nameKey` makes the default place's name follow the chosen language
 const DEFAULT_PLACE = {
   name: "Erbil, Iraq",
+  nameKey: "home.defaultPlace",
   latitude: 36.1912,
   longitude: 44.0094,
 };
@@ -121,6 +132,8 @@ const DEFAULT_PLACE = {
 const { xs } = useDisplay();
 const { t } = useI18n();
 const { units } = useUnits();
+const { language } = useLanguage();
+const fmt = computed(() => createDateFormatter(language.value));
 
 const loading = ref(false);
 const errorMessage = ref("");
@@ -134,11 +147,34 @@ const homePlace = ref(null);
 let latestLoadId = 0;
 const hasSearched = ref(false);
 
-// null until the first forecast loads, so the page shows placeholders instead of "0°"
-const current = ref(null);
-const stats = ref([]);
-const dailyForecastDays = ref([]);
-const hourlyForecastDays = ref([]);
+// The last successful load: raw API data plus the place and units it was fetched for.
+// Everything shown is computed from it, so switching language re-renders without refetching.
+// null until the first forecast loads, so the page shows placeholders instead of "0°".
+const loaded = shallowRef(null);
+
+const placeName = (place) => (place.nameKey ? t(place.nameKey) : place.name);
+
+const current = computed(() => loaded.value
+  && buildCurrentWeather(loaded.value.forecast, placeName(loaded.value.place), fmt.value));
+const stats = computed(() => (loaded.value ? buildStats(loaded.value.forecast, loaded.value.units) : []));
+const dailyForecastDays = computed(() => (loaded.value
+  ? buildDailyForecast(loaded.value.forecast, fmt.value)
+  : []));
+const hourlyForecastDays = computed(() => (loaded.value
+  ? buildHourlyForecast(loaded.value.forecast, fmt.value)
+  : []));
+const insights = computed(() => loaded.value
+  && buildInsights(loaded.value.forecast, loaded.value.air, loaded.value.units, fmt.value));
+const scene = computed(() => loaded.value
+  && getScene(loaded.value.forecast, loaded.value.air, loaded.value.units));
+
+const yesterdayNote = computed(() => {
+  const diff = current.value?.vsYesterday;
+  if (diff == null) return { text: "", icon: "" };
+  if (diff > 0) return { text: t("current.warmerThanYesterday", { n: diff }), icon: "mdi-arrow-up" };
+  if (diff < 0) return { text: t("current.coolerThanYesterday", { n: -diff }), icon: "mdi-arrow-down" };
+  return { text: t("current.sameAsYesterday"), icon: "mdi-equal" };
+});
 
 /** Our own errors carry an i18n key; anything else (e.g. offline) gets the fallback. */
 function translateError (error, fallbackKey) {
@@ -153,12 +189,14 @@ async function loadWeather (place) {
   notFoundQuery.value = "";
 
   try {
-    const data = await fetchForecast(place.latitude, place.longitude, units);
+    const fetchedUnits = { ...units };
+    const [forecast, air] = await Promise.all([
+      fetchForecast(place.latitude, place.longitude, fetchedUnits),
+      // Air quality is a bonus — if it fails, the dust card is just hidden
+      fetchAirQuality(place.latitude, place.longitude).catch(() => null),
+    ]);
     if (loadId !== latestLoadId) return;
-    current.value = buildCurrentWeather(data, place.name);
-    stats.value = buildStats(data, units);
-    dailyForecastDays.value = buildDailyForecast(data);
-    hourlyForecastDays.value = buildHourlyForecast(data);
+    loaded.value = { forecast, air, place, units: fetchedUnits };
   } catch (error) {
     if (loadId !== latestLoadId) return;
     retryAction = () => loadWeather(place);
@@ -177,7 +215,7 @@ async function handleSearch (query) {
   notFoundQuery.value = "";
 
   try {
-    const place = await geocodeLocation(query);
+    const place = await geocodeLocation(query, language.value.api);
     await loadWeather(place);
   } catch (error) {
     if (error.i18nKey === "errors.placeNotFound") {
@@ -219,8 +257,8 @@ async function loadInitialWeather () {
   let place = DEFAULT_PLACE;
   try {
     const { latitude, longitude } = await getBrowserPosition();
-    const name = await reverseGeocode(latitude, longitude).catch(() => "");
-    place = { name: name || t("home.yourLocation"), latitude, longitude };
+    const name = await reverseGeocode(latitude, longitude, language.value.api).catch(() => "");
+    place = name ? { name, latitude, longitude } : { nameKey: "home.yourLocation", latitude, longitude };
   } catch {
     // Denied, unsupported or timed out — keep the default place
   }

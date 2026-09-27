@@ -1,0 +1,151 @@
+{
+  "app": {
+    "name": "الطقس الآن"
+  },
+  "header": {
+    "units": "الوحدات",
+    "switchToImperial": "التبديل إلى الإمبراطوري",
+    "switchToMetric": "التبديل إلى المتري",
+    "temperature": "درجة الحرارة",
+    "celsius": "مئوية (°C)",
+    "fahrenheit": "فهرنهايت (°F)",
+    "windSpeed": "سرعة الرياح",
+    "kmh": "كم/س",
+    "mph": "ميل/س",
+    "precipitation": "الهطول",
+    "millimeters": "مليمتر (mm)",
+    "inches": "إنش (in)"
+  },
+  "home": {
+    "title": "كيف تبدو السماء اليوم؟",
+    "yourLocation": "موقعك",
+    "defaultPlace": "أربيل، العراق"
+  },
+  "errors": {
+    "searchFailed": "تعذّر البحث عن هذا المكان.",
+    "placeNotFound": "لم نتمكن من العثور على \"{query}\". تحقق من الإملاء أو جرّب مدينة قريبة.",
+    "noResults": "لم يتم العثور على نتائج!",
+    "title": "حدث خطأ ما",
+    "tryAgain": "يرجى التحقق من اتصالك والمحاولة مرة أخرى بعد لحظات.",
+    "retry": "إعادة المحاولة",
+    "forecastFailed": "تعذّر جلب توقعات الطقس.",
+    "geolocationUnsupported": "هذا المتصفح لا يدعم تحديد الموقع.",
+    "geolocationTimeout": "انتهت مهلة تحديد موقعك.",
+    "reverseGeocodeFailed": "تعذّر التعرف على موقعك."
+  },
+  "search": {
+    "placeholder": "ابحث عن مكان…",
+    "button": "بحث",
+    "noSuggestions": "لا توجد أماكن مطابقة لـ \"{query}\"",
+    "searching": "جارٍ البحث…",
+    "keepTyping": "تابع الكتابة لرؤية الأماكن"
+  },
+  "stats": {
+    "feelsLike": "الإحساس الفعلي",
+    "humidity": "الرطوبة",
+    "wind": "الرياح",
+    "precipitation": "الهطول"
+  },
+  "dailyForecast": {
+    "title": "التوقعات اليومية"
+  },
+  "hourlyForecast": {
+    "title": "التوقعات بالساعة",
+    "days": {
+      "monday": "الاثنين",
+      "tuesday": "الثلاثاء",
+      "wednesday": "الأربعاء",
+      "thursday": "الخميس",
+      "friday": "الجمعة",
+      "saturday": "السبت",
+      "sunday": "الأحد"
+    }
+  },
+  "language": {
+    "label": "اللغة",
+    "en": "English",
+    "ckb": "کوردی",
+    "ar": "العربية"
+  },
+  "units": {
+    "kmh": "كم/س",
+    "mph": "ميل/س",
+    "mm": "مم",
+    "inch": "إنش"
+  },
+  "current": {
+    "warmerThanYesterday": "أدفأ من أمس بـ {n}°",
+    "coolerThanYesterday": "أبرد من أمس بـ {n}°",
+    "sameAsYesterday": "مثل أمس"
+  },
+  "insights": {
+    "title": "نصائح اليوم",
+    "days": {
+      "today": "اليوم",
+      "tomorrow": "غدًا",
+      "dayAfter": "بعد غد"
+    },
+    "periods": {
+      "morning": "صباحًا",
+      "afternoon": "بعد الظهر",
+      "evening": "مساءً",
+      "night": "ليلًا"
+    },
+    "heat": {
+      "title": "السلامة من الحر",
+      "levels": {
+        "safe": "آمن",
+        "caution": "حذر",
+        "danger": "خطير",
+        "extreme": "خطر شديد"
+      },
+      "advice": {
+        "safe": "الجو مناسب للتواجد في الخارج.",
+        "caution": "اشرب الماء باستمرار وخذ استراحات في الظل.",
+        "danger": "تجنّب الشمس من 11 صباحًا حتى 4 عصرًا. اشرب الماء حتى لو لم تشعر بالعطش.",
+        "extreme": "ابقَ في الداخل خلال أشد الساعات حرًا واطمئن على جيرانك كبار السن."
+      },
+      "detail": "الإحساس حتى {temp}° · الأشعة فوق البنفسجية {uv} ({uvLevel})",
+      "uv": {
+        "low": "منخفضة",
+        "moderate": "متوسطة",
+        "high": "مرتفعة",
+        "veryHigh": "مرتفعة جدًا",
+        "extreme": "شديدة"
+      }
+    },
+    "dust": {
+      "title": "الغبار والهواء",
+      "levels": {
+        "low": "غبار قليل",
+        "moderate": "بعض الغبار",
+        "high": "مغبر",
+        "severe": "عاصفة ترابية"
+      },
+      "expected": "يُتوقع غبار {day} {period}. أبقِ النوافذ مغلقة.",
+      "clear": "لا يُتوقع عاصفة ترابية خلال اليومين القادمين.",
+      "detail": "جودة الهواء {aqi} ({aqiLevel})",
+      "aqi": {
+        "good": "جيدة",
+        "moderate": "متوسطة",
+        "sensitive": "غير صحية للفئات الحساسة",
+        "unhealthy": "غير صحية",
+        "veryUnhealthy": "غير صحية جدًا",
+        "hazardous": "خطرة"
+      }
+    },
+    "bestTime": {
+      "title": "أفضل وقت للخروج",
+      "window": "{start} – {end} {day}",
+      "coolest": "أبرد الساعات للمشي أو قضاء المشاوير (الإحساس {temp}°).",
+      "warmest": "أدفأ ساعات اليوم (الإحساس {temp}°)."
+    },
+    "week": {
+      "title": "هذا الأسبوع",
+      "noRain": "لا أمطار هذا الأسبوع",
+      "noRainAdvice": "لا تنسَ سقي نباتاتك.",
+      "rainDays": "أمطار محتملة: {days}",
+      "rainAdvice": "احمل مظلة وأدخل الغسيل."
+    }
+  }
+}

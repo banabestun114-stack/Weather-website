@@ -16,9 +16,10 @@
             {{ day.label }}
           </p>
           <img class="mb-2" :src="day.image" alt="" width="32" height="32" />
-          <p class="text-body-medium mb-0">
+          <!-- flex so high/low keep their gap and order in right-to-left layouts -->
+          <p class="text-body-medium d-flex justify-center ga-1 mb-0">
             <span class="font-weight-bold">{{ day.high }}°</span>
-            <span class="text-medium-emphasis ml-1">{{ day.low }}°</span>
+            <span class="text-medium-emphasis">{{ day.low }}°</span>
           </p>
         </v-card>
       </v-col>

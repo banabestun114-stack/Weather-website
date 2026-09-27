@@ -18,7 +18,8 @@
   },
   "home": {
     "title": "How's the sky looking today?",
-    "yourLocation": "Your location"
+    "yourLocation": "Your location",
+    "defaultPlace": "Erbil, Iraq"
   },
   "errors": {
     "searchFailed": "Failed to search for that place.",
@@ -58,6 +59,93 @@
       "friday": "Friday",
       "saturday": "Saturday",
       "sunday": "Sunday"
+    }
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "ckb": "کوردی",
+    "ar": "العربية"
+  },
+  "units": {
+    "kmh": "km/h",
+    "mph": "mph",
+    "mm": "mm",
+    "inch": "in"
+  },
+  "current": {
+    "warmerThanYesterday": "{n}° warmer than yesterday",
+    "coolerThanYesterday": "{n}° cooler than yesterday",
+    "sameAsYesterday": "Same as yesterday"
+  },
+  "insights": {
+    "title": "Today's advice",
+    "days": {
+      "today": "today",
+      "tomorrow": "tomorrow",
+      "dayAfter": "the day after tomorrow"
+    },
+    "periods": {
+      "morning": "morning",
+      "afternoon": "afternoon",
+      "evening": "evening",
+      "night": "night"
+    },
+    "heat": {
+      "title": "Heat safety",
+      "levels": {
+        "safe": "Safe",
+        "caution": "Caution",
+        "danger": "Dangerous",
+        "extreme": "Extreme danger"
+      },
+      "advice": {
+        "safe": "Comfortable for being outside.",
+        "caution": "Drink water often and take breaks in the shade.",
+        "danger": "Avoid the sun from 11 AM to 4 PM. Drink water even if you're not thirsty.",
+        "extreme": "Stay indoors during the hottest hours and check on older neighbors."
+      },
+      "detail": "Feels like up to {temp}° · UV {uv} ({uvLevel})",
+      "uv": {
+        "low": "low",
+        "moderate": "moderate",
+        "high": "high",
+        "veryHigh": "very high",
+        "extreme": "extreme"
+      }
+    },
+    "dust": {
+      "title": "Dust & air",
+      "levels": {
+        "low": "Low dust",
+        "moderate": "Some dust",
+        "high": "Dusty",
+        "severe": "Dust storm"
+      },
+      "expected": "Dust expected {day} {period}. Keep windows closed.",
+      "clear": "No dust storm expected in the next 2 days.",
+      "detail": "Air quality {aqi} ({aqiLevel})",
+      "aqi": {
+        "good": "good",
+        "moderate": "moderate",
+        "sensitive": "unhealthy for sensitive groups",
+        "unhealthy": "unhealthy",
+        "veryUnhealthy": "very unhealthy",
+        "hazardous": "hazardous"
+      }
+    },
+    "bestTime": {
+      "title": "Best time outside",
+      "window": "{start} – {end} {day}",
+      "coolest": "The coolest hours for a walk or errands (feels like {temp}°).",
+      "warmest": "The warmest hours of the day (feels like {temp}°)."
+    },
+    "week": {
+      "title": "This week",
+      "noRain": "No rain this week",
+      "noRainAdvice": "Remember to water your plants.",
+      "rainDays": "Rain likely: {days}",
+      "rainAdvice": "Keep an umbrella handy and bring the laundry in."
     }
   }
 }

@@ -25,7 +25,12 @@
       </v-menu>
     </div>
 
-    <div class="hour-list d-flex flex-column ga-3">
+    <div
+      ref="hourList"
+      class="hour-list d-flex flex-column ga-3"
+      :class="{ 'at-end': atEnd }"
+      @scroll.passive="updateAtEnd"
+    >
       <v-card
         v-for="hour in selectedDay?.hours ?? []"
         :key="hour.time"
@@ -58,6 +63,23 @@ watch(() => props.days, () => {
   selectedIndex.value = 0;
 });
 
+// Fade the bottom of the list while there's more to scroll, so users know it continues
+const hourList = ref(null);
+const atEnd = ref(false);
+
+function updateAtEnd () {
+  const el = hourList.value;
+  if (!el) return;
+  atEnd.value = el.scrollTop + el.clientHeight >= el.scrollHeight - 4;
+}
+
+// Switching day shows a new list: start at the top again
+watch(selectedDay, async () => {
+  await nextTick();
+  if (hourList.value) hourList.value.scrollTop = 0;
+  updateAtEnd();
+});
+
 function dayLabel(day) {
   return t(`hourlyForecast.days.${day.dayKey}`);
 }
@@ -67,6 +89,12 @@ function dayLabel(day) {
 .hour-list {
   max-height: 420px;
   overflow-y: auto;
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 64px), transparent);
+  transition: mask-image 0.2s;
+}
+
+.hour-list.at-end {
+  mask-image: none;
 }
 
 .hour-card {

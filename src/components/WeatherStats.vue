@@ -6,7 +6,7 @@
           {{ t(`stats.${stat.key}`) }}
         </p>
         <p class="text-title-large font-weight-bold mb-0">
-          {{ stat.value }}
+          {{ stat.value }}{{ stat.unit ? ` ${t(`units.${stat.unit}`)}` : "" }}
         </p>
       </v-card>
     </v-col>

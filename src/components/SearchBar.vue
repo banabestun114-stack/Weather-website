@@ -33,7 +33,7 @@
           <!-- Status line while there are no suggestions to list -->
           <v-list-item :title="noDataText">
             <template #prepend>
-              <v-progress-circular v-if="searching" class="mr-8" indeterminate size="20" width="2" />
+              <v-progress-circular v-if="searching" class="me-8" indeterminate size="20" width="2" />
               <v-icon v-else :icon="noResults ? 'mdi-map-marker-question-outline' : 'mdi-keyboard-outline'" />
             </template>
           </v-list-item>
@@ -52,7 +52,7 @@
       >
         <img
           v-if="loading"
-          class="mr-2 spin"
+          class="me-2 spin"
           src="@/assets/icon-loading.svg"
           alt=""
           width="16"
@@ -66,6 +66,7 @@
 
 <script setup>
 import { useDisplay } from "vuetify";
+import { useLanguage } from "@/composables/useLanguage";
 import { searchPlaces } from "@/composables/useWeather";
 
 defineProps({
@@ -76,6 +77,7 @@ const emit = defineEmits(["search", "select", "clear"]);
 
 const { xs } = useDisplay();
 const { t } = useI18n();
+const { language } = useLanguage();
 
 const query = ref("");
 const selectedPlace = ref(null);
@@ -121,7 +123,7 @@ watch(query, (text) => {
   debounceTimer = setTimeout(async () => {
     controller = new AbortController();
     try {
-      suggestions.value = await searchPlaces(trimmed, 5, { signal: controller.signal });
+      suggestions.value = await searchPlaces(trimmed, 5, { signal: controller.signal, language: language.value.api });
       noResults.value = suggestions.value.length === 0;
       searching.value = false;
     } catch (error) {
