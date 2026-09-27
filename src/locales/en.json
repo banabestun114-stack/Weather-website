@@ -22,7 +22,11 @@
   },
   "errors": {
     "searchFailed": "Failed to search for that place.",
-    "placeNotFound": "Couldn't find \"{query}\". Try another place.",
+    "placeNotFound": "We couldn't find \"{query}\". Check the spelling or try a nearby city.",
+    "noResults": "No search result found!",
+    "title": "Something went wrong",
+    "tryAgain": "Please check your connection and try again in a few moments.",
+    "retry": "Retry",
     "forecastFailed": "Failed to fetch the forecast.",
     "geolocationUnsupported": "Geolocation is not supported by this browser.",
     "geolocationTimeout": "Timed out getting your location.",
@@ -30,7 +34,10 @@
   },
   "search": {
     "placeholder": "Search for a place…",
-    "button": "Search"
+    "button": "Search",
+    "noSuggestions": "No places match \"{query}\"",
+    "searching": "Searching…",
+    "keepTyping": "Keep typing to see places"
   },
   "stats": {
     "feelsLike": "Feels Like",

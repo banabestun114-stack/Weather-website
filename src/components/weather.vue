@@ -2,79 +2,99 @@
   <v-container class="py-6 py-sm-10">
     <weather-header />
 
-    <h1
-      class="text-center mx-auto my-8 font-weight-semibold"
-      :class="xs ? 'text-headline-medium' : 'text-display-medium'"
-    >
-      {{ t("home.title") }}
-    </h1>
+    <!-- API / network failure: replaces the page with a retry screen -->
+    <div v-if="errorMessage" class="error-state d-flex flex-column align-center text-center mx-auto py-12 py-sm-16">
+      <img class="mb-6" src="@/assets/icon-error.svg" alt="" width="42" height="42" />
+      <h2
+        class="font-weight-bold mb-4"
+        :class="xs ? 'text-headline-medium' : 'text-display-small'"
+      >
+        {{ t("errors.title") }}
+      </h2>
+      <p class="text-body-large text-medium-emphasis mb-8">
+        {{ errorMessage }} {{ t("errors.tryAgain") }}
+      </p>
+      <v-btn
+        :loading="loading"
+        prepend-icon="mdi-refresh"
+        rounded="lg"
+        variant="tonal"
+        @click="retry"
+      >
+        {{ t("errors.retry") }}
+      </v-btn>
+    </div>
 
-    <v-alert
-      v-if="errorMessage"
-      class="mb-6"
-      closable
-      density="compact"
-      icon="false"
-      type="error"
-      variant="tonal"
-      @click:close="errorMessage = ''"
-    >
-      <template #prepend>
-        <img src="@/assets/icon-error.svg" alt="" width="18" height="18" />
-      </template>
-      {{ errorMessage }}
-    </v-alert>
+    <template v-else>
+      <h1
+        class="text-center mx-auto my-8 font-weight-semibold"
+        :class="xs ? 'text-headline-medium' : 'text-display-medium'"
+      >
+        {{ t("home.title") }}
+      </h1>
 
-    <search-bar
-      class="mb-8"
-      :loading="loading"
-      @search="handleSearch"
-      @select="handleSelect"
-    />
+      <search-bar
+        :class="notFoundQuery ? 'mb-4' : 'mb-8'"
+        :loading="loading"
+        @search="handleSearch"
+        @select="handleSelect"
+        @clear="handleClear"
+      />
 
-    <v-row>
-      <v-col cols="12" md="8">
-        <template v-if="current">
-          <current-weather-card
-            :date="current.date"
-            :image="current.image"
-            :location="current.location"
-            :temp="current.temp"
+      <!-- Misspelled / unknown city: keep showing the last weather, just explain -->
+      <div v-if="notFoundQuery" class="text-center mb-8">
+        <p class="text-title-large font-weight-bold mb-1">
+          {{ t("errors.noResults") }}
+        </p>
+        <p class="text-body-medium text-medium-emphasis mb-0">
+          {{ t("errors.placeNotFound", { query: notFoundQuery }) }}
+        </p>
+      </div>
+
+      <v-row>
+        <v-col cols="12" md="8">
+          <template v-if="current">
+            <current-weather-card
+              :date="current.date"
+              :image="current.image"
+              :location="current.location"
+              :temp="current.temp"
+            />
+
+            <weather-stats :stats="stats" />
+
+            <daily-forecast :days="dailyForecastDays" />
+          </template>
+
+          <!-- Placeholders until the first forecast arrives -->
+          <template v-else>
+            <v-skeleton-loader class="rounded-lg" color="surface-bright" height="200" type="image" />
+
+            <v-row class="mt-4">
+              <v-col v-for="n in 4" :key="n" cols="6" sm="3">
+                <v-skeleton-loader class="rounded-lg" color="surface-bright" type="list-item-two-line" />
+              </v-col>
+            </v-row>
+
+            <v-row class="pt-6" density="compact">
+              <v-col v-for="n in 7" :key="n" cols="4" sm>
+                <v-skeleton-loader class="rounded-lg" color="surface-bright" height="120" type="image" />
+              </v-col>
+            </v-row>
+          </template>
+        </v-col>
+
+        <v-col cols="12" md="4">
+          <hourly-forecast v-if="hourlyForecastDays.length" :days="hourlyForecastDays" />
+          <v-skeleton-loader
+            v-else
+            class="rounded-lg"
+            color="surface-bright"
+            type="heading, list-item, list-item, list-item, list-item, list-item, list-item, list-item"
           />
-
-          <weather-stats :stats="stats" />
-
-          <daily-forecast :days="dailyForecastDays" />
-        </template>
-
-        <!-- Placeholders until the first forecast arrives -->
-        <template v-else>
-          <v-skeleton-loader class="rounded-lg" color="surface-bright" height="200" type="image" />
-
-          <v-row class="mt-4">
-            <v-col v-for="n in 4" :key="n" cols="6" sm="3">
-              <v-skeleton-loader class="rounded-lg" color="surface-bright" type="list-item-two-line" />
-            </v-col>
-          </v-row>
-
-          <v-row class="pt-6" density="compact">
-            <v-col v-for="n in 7" :key="n" cols="4" sm>
-              <v-skeleton-loader class="rounded-lg" color="surface-bright" height="120" type="image" />
-            </v-col>
-          </v-row>
-        </template>
-      </v-col>
-
-      <v-col cols="12" md="4">
-        <hourly-forecast v-if="hourlyForecastDays.length" :days="hourlyForecastDays" />
-        <v-skeleton-loader
-          v-else
-          class="rounded-lg"
-          color="surface-bright"
-          type="heading, list-item, list-item, list-item, list-item, list-item, list-item, list-item"
-        />
-      </v-col>
-    </v-row>
+        </v-col>
+      </v-row>
+    </template>
   </v-container>
 </template>
 
@@ -104,7 +124,14 @@ const { units } = useUnits();
 
 const loading = ref(false);
 const errorMessage = ref("");
+const notFoundQuery = ref("");
+// Re-runs whatever failed (a search or a forecast load) from the error screen
+let retryAction = null;
 const currentPlace = ref(DEFAULT_PLACE);
+// The place the page started with (the user's location, or DEFAULT_PLACE) — shown again when the search is cleared
+const homePlace = ref(null);
+// Increments per load so a slow, older response can't overwrite a newer one
+let latestLoadId = 0;
 const hasSearched = ref(false);
 
 // null until the first forecast loads, so the page shows placeholders instead of "0°"
@@ -119,20 +146,25 @@ function translateError (error, fallbackKey) {
 }
 
 async function loadWeather (place) {
+  const loadId = ++latestLoadId;
   currentPlace.value = place;
   loading.value = true;
   errorMessage.value = "";
+  notFoundQuery.value = "";
 
   try {
     const data = await fetchForecast(place.latitude, place.longitude, units);
+    if (loadId !== latestLoadId) return;
     current.value = buildCurrentWeather(data, place.name);
     stats.value = buildStats(data, units);
     dailyForecastDays.value = buildDailyForecast(data);
     hourlyForecastDays.value = buildHourlyForecast(data);
   } catch (error) {
+    if (loadId !== latestLoadId) return;
+    retryAction = () => loadWeather(place);
     errorMessage.value = translateError(error, "errors.forecastFailed");
   } finally {
-    loading.value = false;
+    if (loadId === latestLoadId) loading.value = false;
   }
 }
 
@@ -142,14 +174,32 @@ async function handleSearch (query) {
   hasSearched.value = true;
   loading.value = true;
   errorMessage.value = "";
+  notFoundQuery.value = "";
 
   try {
     const place = await geocodeLocation(query);
     await loadWeather(place);
   } catch (error) {
-    errorMessage.value = translateError(error, "errors.searchFailed");
+    if (error.i18nKey === "errors.placeNotFound") {
+      notFoundQuery.value = query.trim();
+    } else {
+      retryAction = () => handleSearch(query);
+      errorMessage.value = translateError(error, "errors.searchFailed");
+    }
     loading.value = false;
   }
+}
+
+/** Search box emptied → go back to the place the page started with. */
+function handleClear () {
+  notFoundQuery.value = "";
+  if (homePlace.value && currentPlace.value !== homePlace.value) {
+    loadWeather(homePlace.value);
+  }
+}
+
+function retry () {
+  (retryAction ?? (() => loadWeather(currentPlace.value)))();
 }
 
 /** A place picked from the search suggestions — we already have its coordinates. */
@@ -175,6 +225,8 @@ async function loadInitialWeather () {
     // Denied, unsupported or timed out — keep the default place
   }
 
+  homePlace.value = place;
+
   // Don't overwrite a search the user started while we were locating them
   if (hasSearched.value) return;
 
@@ -185,3 +237,9 @@ onMounted(() => {
   loadInitialWeather();
 });
 </script>
+
+<style scoped>
+.error-state {
+  max-width: 560px;
+}
+</style>
