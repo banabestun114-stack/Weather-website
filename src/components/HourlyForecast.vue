@@ -87,7 +87,7 @@ function dayLabel(day) {
 
 <style scoped>
 .hour-list {
-  max-height: 420px;
+  max-height: 800px;
   overflow-y: auto;
   mask-image: linear-gradient(to bottom, #000 calc(100% - 64px), transparent);
   transition: mask-image 0.2s;
@@ -95,6 +95,12 @@ function dayLabel(day) {
 
 .hour-list.at-end {
   mask-image: none;
+}
+
+@media (max-width: 599.98px) {
+  .hour-list {
+    max-height: 420px;
+  }
 }
 
 .hour-card {

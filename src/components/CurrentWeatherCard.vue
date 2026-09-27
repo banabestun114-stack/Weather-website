@@ -82,7 +82,8 @@ const { xs } = useDisplay();
 }
 
 .scene-hot {
-  background: linear-gradient(160deg, #e0781b 0%, #e5512b 55%, #b02a2a 100%);
+  /* Dark navy (matching the page) warming into amber heat around the sun */
+  background: linear-gradient(160deg, #1c1f3f 0%, #3b2f5c 45%, #9a5a2e 85%, #d99045 100%);
 }
 
 .scene-golden {
@@ -125,6 +126,10 @@ const { xs } = useDisplay();
 .scene-golden .scene-fx {
   background: radial-gradient(circle at 88% 18%, rgba(255, 240, 180, 0.75) 0, rgba(255, 210, 120, 0.3) 14%, transparent 38%);
   animation: glow 6s ease-in-out infinite alternate;
+}
+
+.scene-hot .scene-fx {
+  background: radial-gradient(circle at 86% 20%, rgba(255, 225, 160, 0.8) 0, rgba(255, 185, 90, 0.35) 14%, transparent 42%);
 }
 
 .scene-golden .scene-fx {
