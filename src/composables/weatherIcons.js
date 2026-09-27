@@ -5,9 +5,11 @@
  * https://open-meteo.com/en/docs#weathervariables
  */
 
+import iconClearNight from '@/assets/weather/icon-clear-night.svg'
 import iconDrizzle from '@/assets/weather/icon-drizzle.webp'
 import iconFog from '@/assets/weather/icon-fog.webp'
 import iconOvercast from '@/assets/weather/icon-overcast.webp'
+import iconPartlyCloudyNight from '@/assets/weather/icon-partly-cloudy-night.svg'
 import iconPartlyCloudy from '@/assets/weather/icon-partly-cloudy.webp'
 import iconRain from '@/assets/weather/icon-rain.webp'
 import iconSnow from '@/assets/weather/icon-snow.webp'
@@ -45,8 +47,14 @@ const WEATHER_CODE_ICONS = {
   99: iconStorm,
 }
 
-export { iconSunny }
+// Only the icons that show a sun need a night version
+const NIGHT_ICONS = new Map([
+  [iconSunny, iconClearNight],
+  [iconPartlyCloudy, iconPartlyCloudyNight],
+])
 
-export function getWeatherIcon (code) {
-  return WEATHER_CODE_ICONS[code] ?? iconOvercast
+/** `isDay` follows Open-Meteo's `is_day` flag (1 = day, 0 = night). */
+export function getWeatherIcon (code, isDay = true) {
+  const icon = WEATHER_CODE_ICONS[code] ?? iconOvercast
+  return isDay ? icon : (NIGHT_ICONS.get(icon) ?? icon)
 }

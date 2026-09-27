@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320">
+  <defs>
+    <radialGradient id="moon" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#fffbe8"/>
+      <stop offset="0.55" stop-color="#f3e3a4"/>
+      <stop offset="1" stop-color="#d9bf6a"/>
+    </radialGradient>
+    <radialGradient id="star" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#fffbe8"/>
+      <stop offset="1" stop-color="#e6cd7a"/>
+    </radialGradient>
+    <mask id="crescent">
+      <circle cx="160" cy="160" r="54" fill="#fff"/>
+      <circle cx="190" cy="136" r="46" fill="#000"/>
+    </mask>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+  <circle cx="160" cy="160" r="54" fill="#f3e3a4" opacity="0.35" mask="url(#crescent)" filter="url(#glow)"/>
+  <circle cx="160" cy="160" r="54" fill="url(#moon)" mask="url(#crescent)"/>
+  <circle cx="214" cy="104" r="6" fill="url(#star)"/>
+  <circle cx="236" cy="150" r="4.5" fill="url(#star)"/>
+  <circle cx="110" cy="100" r="4.5" fill="url(#star)"/>
+  <circle cx="206" cy="210" r="5" fill="url(#star)"/>
+</svg>

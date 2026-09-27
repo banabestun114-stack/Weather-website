@@ -29,20 +29,45 @@
 
     <v-row>
       <v-col cols="12" md="8">
-        <current-weather-card
-          :date="current.date"
-          :image="current.image"
-          :location="current.location"
-          :temp="current.temp"
-        />
+        <template v-if="current">
+          <current-weather-card
+            :date="current.date"
+            :image="current.image"
+            :location="current.location"
+            :temp="current.temp"
+          />
 
-        <weather-stats :stats="stats" />
+          <weather-stats :stats="stats" />
 
-        <daily-forecast :days="dailyForecastDays" />
+          <daily-forecast :days="dailyForecastDays" />
+        </template>
+
+        <!-- Placeholders until the first forecast arrives -->
+        <template v-else>
+          <v-skeleton-loader class="rounded-lg" color="surface-bright" height="200" type="image" />
+
+          <v-row class="mt-4">
+            <v-col v-for="n in 4" :key="n" cols="6" sm="3">
+              <v-skeleton-loader class="rounded-lg" color="surface-bright" type="list-item-two-line" />
+            </v-col>
+          </v-row>
+
+          <v-row class="pt-6" density="compact">
+            <v-col v-for="n in 7" :key="n" cols="4" sm>
+              <v-skeleton-loader class="rounded-lg" color="surface-bright" height="120" type="image" />
+            </v-col>
+          </v-row>
+        </template>
       </v-col>
 
       <v-col cols="12" md="4">
-        <hourly-forecast :hours="hourlyForecastHours" />
+        <hourly-forecast v-if="hourlyForecastDays.length" :days="hourlyForecastDays" />
+        <v-skeleton-loader
+          v-else
+          class="rounded-lg"
+          color="surface-bright"
+          type="heading, list-item, list-item, list-item, list-item, list-item, list-item, list-item"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -58,8 +83,9 @@ import {
   buildStats,
   fetchForecast,
   geocodeLocation,
+  getBrowserPosition,
+  reverseGeocode,
 } from "@/composables/useWeather";
-import { iconSunny } from "@/composables/weatherIcons";
 
 const DEFAULT_PLACE = {
   name: "Erbil, Iraq",
@@ -74,16 +100,18 @@ const { units } = useUnits();
 const loading = ref(false);
 const errorMessage = ref("");
 const currentPlace = ref(DEFAULT_PLACE);
+const hasSearched = ref(false);
 
-const current = ref({
-  location: "",
-  date: "",
-  temp: 0,
-  image: iconSunny,
-});
+// null until the first forecast loads, so the page shows placeholders instead of "0°"
+const current = ref(null);
 const stats = ref([]);
 const dailyForecastDays = ref([]);
-const hourlyForecastHours = ref([]);
+const hourlyForecastDays = ref([]);
+
+/** Our own errors carry an i18n key; anything else (e.g. offline) gets the fallback. */
+function translateError (error, fallbackKey) {
+  return error.i18nKey ? t(error.i18nKey, error.params) : t(fallbackKey);
+}
 
 async function loadWeather (place) {
   currentPlace.value = place;
@@ -95,9 +123,9 @@ async function loadWeather (place) {
     current.value = buildCurrentWeather(data, place.name);
     stats.value = buildStats(data, units);
     dailyForecastDays.value = buildDailyForecast(data);
-    hourlyForecastHours.value = buildHourlyForecast(data);
+    hourlyForecastDays.value = buildHourlyForecast(data);
   } catch (error) {
-    errorMessage.value = error.message || "Something went wrong fetching the forecast.";
+    errorMessage.value = translateError(error, "errors.forecastFailed");
   } finally {
     loading.value = false;
   }
@@ -106,6 +134,7 @@ async function loadWeather (place) {
 async function handleSearch (query) {
   if (!query?.trim()) return;
 
+  hasSearched.value = true;
   loading.value = true;
   errorMessage.value = "";
 
@@ -113,7 +142,7 @@ async function handleSearch (query) {
     const place = await geocodeLocation(query);
     await loadWeather(place);
   } catch (error) {
-    errorMessage.value = error.message || "Could not find that place.";
+    errorMessage.value = translateError(error, "errors.searchFailed");
     loading.value = false;
   }
 }
@@ -122,7 +151,26 @@ watch(units, () => {
   loadWeather(currentPlace.value);
 }, { deep: true });
 
+/** Start with the user's own location, falling back to the default place. */
+async function loadInitialWeather () {
+  loading.value = true;
+
+  let place = DEFAULT_PLACE;
+  try {
+    const { latitude, longitude } = await getBrowserPosition();
+    const name = await reverseGeocode(latitude, longitude).catch(() => "");
+    place = { name: name || t("home.yourLocation"), latitude, longitude };
+  } catch {
+    // Denied, unsupported or timed out — keep the default place
+  }
+
+  // Don't overwrite a search the user started while we were locating them
+  if (hasSearched.value) return;
+
+  await loadWeather(place);
+}
+
 onMounted(() => {
-  loadWeather(DEFAULT_PLACE);
+  loadInitialWeather();
 });
 </script>

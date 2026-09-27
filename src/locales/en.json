@@ -17,7 +17,16 @@
     "inches": "Inches (in)"
   },
   "home": {
-    "title": "How's the sky looking today?"
+    "title": "How's the sky looking today?",
+    "yourLocation": "Your location"
+  },
+  "errors": {
+    "searchFailed": "Failed to search for that place.",
+    "placeNotFound": "Couldn't find \"{query}\". Try another place.",
+    "forecastFailed": "Failed to fetch the forecast.",
+    "geolocationUnsupported": "Geolocation is not supported by this browser.",
+    "geolocationTimeout": "Timed out getting your location.",
+    "reverseGeocodeFailed": "Failed to look up your location."
   },
   "search": {
     "placeholder": "Search for a place…",

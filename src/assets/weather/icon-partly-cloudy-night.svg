@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320">
+  <defs>
+    <radialGradient id="moon" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#fffbe8"/>
+      <stop offset="0.55" stop-color="#f3e3a4"/>
+      <stop offset="1" stop-color="#d9bf6a"/>
+    </radialGradient>
+    <radialGradient id="star" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#fffbe8"/>
+      <stop offset="1" stop-color="#e6cd7a"/>
+    </radialGradient>
+    <linearGradient id="cloud" x1="0" y1="100" x2="0" y2="250" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.6" stop-color="#f4f5f8"/>
+      <stop offset="1" stop-color="#d9dde5"/>
+    </linearGradient>
+    <mask id="crescent">
+      <circle cx="106" cy="128" r="40" fill="#fff"/>
+      <circle cx="128" cy="110" r="34" fill="#000"/>
+    </mask>
+  </defs>
+  <circle cx="106" cy="128" r="40" fill="url(#moon)" mask="url(#crescent)"/>
+  <circle cx="58" cy="118" r="4.5" fill="url(#star)"/>
+  <circle cx="90" cy="78" r="4.5" fill="url(#star)"/>
+  <circle cx="134" cy="72" r="4.5" fill="url(#star)"/>
+  <g fill="url(#cloud)">
+    <circle cx="190" cy="168" r="62"/>
+    <circle cx="124" cy="192" r="46"/>
+    <rect x="78" y="180" width="194" height="66" rx="33"/>
+  </g>
+</svg>

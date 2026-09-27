@@ -8,17 +8,18 @@
       <v-menu>
         <template #activator="{ props: menuProps }">
           <v-btn v-bind="menuProps" rounded="lg" size="small" variant="tonal">
-            {{ selectedDay }}
+            {{ selectedDay ? dayLabel(selectedDay) : "" }}
             <v-icon end icon="mdi-chevron-down" />
           </v-btn>
         </template>
 
         <v-list density="compact">
           <v-list-item
-            v-for="day in dayOptions"
-            :key="day"
-            :title="day"
-            @click="selectedDay = day"
+            v-for="(day, index) in days"
+            :key="day.date"
+            :active="index === selectedIndex"
+            :title="dayLabel(day)"
+            @click="selectedIndex = index"
           />
         </v-list>
       </v-menu>
@@ -26,7 +27,7 @@
 
     <div class="hour-list d-flex flex-column ga-3">
       <v-card
-        v-for="hour in hours"
+        v-for="hour in selectedDay?.hours ?? []"
         :key="hour.time"
         class="hour-card d-flex align-center justify-space-between px-4 py-3"
         flat
@@ -43,27 +44,23 @@
 </template>
 
 <script setup>
-defineProps({
-  hours: { type: Array, required: true },
+const props = defineProps({
+  days: { type: Array, required: true },
 });
 
 const { t } = useI18n();
 
-const dayKeys = [
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-  "sunday",
-];
-const dayOptions = computed(() =>
-  dayKeys.map((key) => t(`hourlyForecast.days.${key}`)),
-);
+const selectedIndex = ref(0);
+const selectedDay = computed(() => props.days[selectedIndex.value]);
 
-const todayIndex = (new Date().getDay() + 6) % 7;
-const selectedDay = ref(dayOptions.value[todayIndex]);
+// New forecast (search or unit change) → jump back to today
+watch(() => props.days, () => {
+  selectedIndex.value = 0;
+});
+
+function dayLabel(day) {
+  return t(`hourlyForecast.days.${day.dayKey}`);
+}
 </script>
 
 <style scoped>
