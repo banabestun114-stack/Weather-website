@@ -6,6 +6,7 @@ import Fonts from 'unplugin-fonts/vite'
 import { defineConfig } from 'vite'
 import VueRouter from 'vue-router/vite'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import Seo from './vite/seo.mjs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -43,6 +44,8 @@ export default defineConfig({
         ],
       },
     }),
+    // robots.txt, sitemap.xml and search/share tags — see vite/seo.mjs
+    Seo(),
   ],
   define: { 'process.env': {} },
   resolve: {
