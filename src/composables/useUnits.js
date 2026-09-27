@@ -7,9 +7,9 @@
  */
 
 const state = reactive({
-  temperature: 'fahrenheit', // 'celsius' | 'fahrenheit'
-  windSpeed: 'mph', // 'kmh' | 'mph'
-  precipitation: 'inch', // 'mm' | 'inch'
+  temperature: 'celsius', // 'celsius' | 'fahrenheit'
+  windSpeed: 'kmh', // 'kmh' | 'mph'
+  precipitation: 'mm', // 'mm' | 'inch'
 })
 
 const isImperial = computed(() =>

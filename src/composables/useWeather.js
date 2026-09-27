@@ -104,9 +104,9 @@ export async function reverseGeocode (latitude, longitude) {
 /** Fetch current/hourly/daily forecast data for a coordinate. */
 export async function fetchForecast (latitude, longitude, units = {}) {
   const {
-    temperature = 'fahrenheit',
-    windSpeed = 'mph',
-    precipitation = 'inch',
+    temperature = 'celsius',
+    windSpeed = 'kmh',
+    precipitation = 'mm',
   } = units
 
   const params = new URLSearchParams({
