@@ -1,8 +1,18 @@
 <template>
   <div class="d-flex justify-space-between align-center">
-    <img :src="logoSrc" :alt="t('app.name')" height="28" />
+    <img :src="isDark ? logoSrc : logoLightSrc" :alt="t('app.name')" height="28" />
 
     <div class="d-flex align-center ga-2">
+      <v-btn
+        :aria-label="isDark ? t('theme.light') : t('theme.dark')"
+        :icon="isDark ? 'mdi-weather-sunny' : 'mdi-weather-night'"
+        rounded="lg"
+        :size="xs ? 'small' : 'default'"
+        :title="isDark ? t('theme.light') : t('theme.dark')"
+        variant="tonal"
+        @click="toggleTheme"
+      />
+
       <v-menu>
         <template #activator="{ props: menuProps }">
           <v-btn
@@ -42,7 +52,7 @@
             rounded="lg"
             variant="tonal"
           >
-            <img class="me-2" src="@/assets/icon-units.svg" alt="" width="16" height="16" />
+            <img class="themed-icon me-2" src="@/assets/icon-units.svg" alt="" width="16" height="16" />
             {{ t("header.units") }}
             <v-icon end icon="mdi-chevron-down" />
           </v-btn>
@@ -53,7 +63,7 @@
             size="small"
             variant="tonal"
           >
-            <img src="@/assets/icon-units.svg" alt="" width="16" height="16" />
+            <img class="themed-icon" src="@/assets/icon-units.svg" alt="" width="16" height="16" />
           </v-btn>
         </template>
 
@@ -116,13 +126,16 @@
 
 <script setup>
 import { useDisplay } from "vuetify";
+import logoLightSrc from "@/assets/logo-light.svg";
 import logoSrc from "@/assets/logo.svg";
 import { useLanguage } from "@/composables/useLanguage";
+import { useThemeMode } from "@/composables/useThemeMode";
 import { useUnits } from "@/composables/useUnits";
 
 const { t } = useI18n();
 const { xs } = useDisplay();
 const { languages, language, setLanguage } = useLanguage();
+const { isDark, toggleTheme } = useThemeMode();
 const { units, isImperial, toggleSystem, setTemperature, setWindSpeed, setPrecipitation } = useUnits();
 
 const temperatureOptions = computed(() => [
@@ -140,3 +153,10 @@ const precipitationOptions = computed(() => [
   { value: "inch", label: t("header.inches") },
 ]);
 </script>
+
+<style scoped>
+/* The units icon artwork is white — darken it on the light theme */
+:global(.v-theme--weatherLight .themed-icon) {
+  filter: brightness(0.15);
+}
+</style>

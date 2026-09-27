@@ -37,8 +37,9 @@ const props = defineProps({
 
 const { t } = useI18n();
 
-const HEAT_COLORS = { safe: "success", caution: "warning", danger: "orange-darken-1", extreme: "error" };
-const DUST_COLORS = { low: "success", moderate: "amber", high: "orange-darken-1", severe: "error" };
+// Theme colors (see plugins/vuetify.js) so text stays readable in dark and light
+const HEAT_COLORS = { safe: "success", caution: "warning", danger: "alert", extreme: "error" };
+const DUST_COLORS = { low: "success", moderate: "moderate", high: "alert", severe: "error" };
 
 const cards = computed(() => {
   const { heat, dust, bestTime, week } = props.insights;

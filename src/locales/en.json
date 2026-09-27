@@ -147,5 +147,9 @@
       "rainDays": "Rain likely: {days}",
       "rainAdvice": "Keep an umbrella handy and bring the laundry in."
     }
+  },
+  "theme": {
+    "light": "Switch to light mode",
+    "dark": "Switch to dark mode"
   }
 }

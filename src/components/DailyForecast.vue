@@ -15,7 +15,7 @@
           <p class="text-body-medium font-weight-medium mb-2">
             {{ day.label }}
           </p>
-          <img class="mb-2" :src="day.image" alt="" width="32" height="32" />
+          <img class="weather-icon mb-2" :src="day.image" alt="" width="32" height="32" />
           <!-- flex so high/low keep their gap and order in right-to-left layouts -->
           <p class="text-body-medium d-flex justify-center ga-1 mb-0">
             <span class="font-weight-bold">{{ day.high }}°</span>

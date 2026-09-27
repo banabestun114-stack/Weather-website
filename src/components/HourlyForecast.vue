@@ -39,7 +39,7 @@
         rounded="lg"
       >
         <div class="d-flex align-center ga-3">
-          <img :src="hour.image" alt="" width="40" height="40" />
+          <img class="weather-icon" :src="hour.image" alt="" width="40" height="40" />
           <span class="text-body-large">{{ hour.time }}</span>
         </div>
         <span class="font-weight-medium">{{ hour.temp }}°</span>
@@ -104,7 +104,7 @@ function dayLabel(day) {
 }
 
 .hour-card {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(var(--v-theme-on-surface), 0.05);
   flex: none;
 }
 </style>

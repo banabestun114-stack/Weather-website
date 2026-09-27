@@ -383,6 +383,13 @@ onMounted(() => {
   to { transform: translate(-14vw, -10vh) scale(1.2); }
 }
 
+/* Light theme: same weather colors, blended as soft pastel tints on the pale background */
+:global(.v-theme--weatherLight .ambient .glow) {
+  opacity: 0.45;
+  mix-blend-mode: multiply;
+  filter: blur(70px) saturate(1.2);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .glow {
     animation: none;
