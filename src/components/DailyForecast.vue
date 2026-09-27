@@ -15,7 +15,7 @@
           <p class="text-body-medium font-weight-medium mb-2">
             {{ day.label }}
           </p>
-          <v-icon class="mb-2" :color="day.color" :icon="day.icon" size="26" />
+          <img class="mb-2" :src="day.image" alt="" width="32" height="32" />
           <p class="text-body-medium mb-0">
             <span class="font-weight-bold">{{ day.high }}°</span>
             <span class="text-medium-emphasis ml-1">{{ day.low }}°</span>

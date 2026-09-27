@@ -14,27 +14,24 @@
       class="mb-6"
       closable
       density="compact"
+      icon="false"
       type="error"
       variant="tonal"
       @click:close="errorMessage = ''"
     >
+      <template #prepend>
+        <img src="@/assets/icon-error.svg" alt="" width="18" height="18" />
+      </template>
       {{ errorMessage }}
     </v-alert>
 
-    <search-bar class="mb-8" @search="handleSearch" />
-
-    <v-progress-linear
-      v-if="loading"
-      class="mb-4"
-      color="primary"
-      indeterminate
-    />
+    <search-bar class="mb-8" :loading="loading" @search="handleSearch" />
 
     <v-row>
       <v-col cols="12" md="8">
         <current-weather-card
           :date="current.date"
-          :icon="current.icon"
+          :image="current.image"
           :location="current.location"
           :temp="current.temp"
         />
@@ -62,6 +59,7 @@ import {
   fetchForecast,
   geocodeLocation,
 } from "@/composables/useWeather";
+import { iconSunny } from "@/composables/weatherIcons";
 
 const DEFAULT_PLACE = {
   name: "Erbil, Iraq",
@@ -81,7 +79,7 @@ const current = ref({
   location: "",
   date: "",
   temp: 0,
-  icon: "mdi-weather-sunny",
+  image: iconSunny,
 });
 const stats = ref([]);
 const dailyForecastDays = ref([]);

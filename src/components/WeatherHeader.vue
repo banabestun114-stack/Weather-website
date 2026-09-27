@@ -10,18 +10,19 @@
           rounded="lg"
           variant="tonal"
         >
-          <v-icon start icon="mdi-cog-outline" />
+          <img class="mr-2" src="@/assets/icon-units.svg" alt="" width="16" height="16" />
           {{ t("header.units") }}
           <v-icon end icon="mdi-chevron-down" />
         </v-btn>
         <v-btn
           v-bind="menuProps"
           class="d-flex d-sm-none"
-          icon="mdi-cog-outline"
           rounded="lg"
           size="small"
           variant="tonal"
-        />
+        >
+          <img src="@/assets/icon-units.svg" alt="" width="16" height="16" />
+        </v-btn>
       </template>
 
       <v-card class="units-menu pa-2" min-width="260" rounded="lg">

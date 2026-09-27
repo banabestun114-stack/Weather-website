@@ -33,7 +33,7 @@
         rounded="lg"
       >
         <div class="d-flex align-center ga-3">
-          <v-icon :color="hour.color" :icon="hour.icon" size="22" />
+          <img :src="hour.image" alt="" width="26" height="26" />
           <span class="text-body-large">{{ hour.time }}</span>
         </div>
         <span class="font-weight-medium">{{ hour.temp }}°</span>

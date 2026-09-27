@@ -14,7 +14,7 @@
       </div>
 
       <div class="d-flex align-center ga-2 flex-shrink-0">
-        <v-icon color="amber-lighten-1" :icon="icon" :size="xs ? 32 : 40" />
+        <img :src="image" alt="" :width="xs ? 44 : 56" :height="xs ? 44 : 56" />
         <span
           class="font-weight-bold"
           :class="xs ? 'text-display-small' : 'text-display-large'"
@@ -34,7 +34,7 @@ defineProps({
   location: { type: String, required: true },
   date: { type: String, required: true },
   temp: { type: [Number, String], required: true },
-  icon: { type: String, default: "mdi-weather-sunny" },
+  image: { type: String, required: true },
 });
 
 const { xs } = useDisplay();
